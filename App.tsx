@@ -1,18 +1,23 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+
+import {Home, Restaurant, OrderDelivery} from './screens';
+
+const Stack = createStackNavigator();
 
 const App = () => {
-  return <SafeAreaView></SafeAreaView>;
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+        initialRouteName={'Home'}>
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
-
-const styles = StyleSheet.create({});
 
 export default App;
