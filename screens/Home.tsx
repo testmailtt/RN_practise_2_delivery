@@ -366,15 +366,15 @@ const Home = ({navigation}) => {
               resizeMode="contain"
               style={{width: 30, height: 30}}
             />
-            <Text
-              style={{
-                marginTop: SIZES.padding,
-                color: isItemSelected ? COLORS.white : COLORS.black,
-                ...FONTS.body5,
-              }}>
-              {item.name}
-            </Text>
           </View>
+          <Text
+            style={{
+              marginTop: SIZES.padding,
+              color: isItemSelected ? COLORS.white : COLORS.black,
+              ...FONTS.body5,
+            }}>
+            {item.name}
+          </Text>
         </TouchableOpacity>
       );
     };
