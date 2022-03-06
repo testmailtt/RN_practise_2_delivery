@@ -318,7 +318,7 @@ const Home = ({navigation}) => {
               justifyContent: 'center',
               borderRadius: SIZES.radius,
             }}>
-            <Text>{currentLocation.streetName}</Text>
+            <Text style={{...FONTS.body2}}>{currentLocation.streetName}</Text>
           </View>
         </View>
         <TouchableOpacity
@@ -370,6 +370,7 @@ const Home = ({navigation}) => {
               style={{
                 marginTop: SIZES.padding,
                 color: isItemSelected ? COLORS.white : COLORS.black,
+                ...FONTS.body5,
               }}>
               {item.name}
             </Text>
@@ -379,8 +380,8 @@ const Home = ({navigation}) => {
     };
     return (
       <View style={{padding: SIZES.padding * 2}}>
-        <Text>Main</Text>
-        <Text>Categories</Text>
+        <Text style={{...FONTS.h1}}>Main</Text>
+        <Text style={{...FONTS.h2}}>Categories</Text>
         <FlatList
           data={categories}
           horizontal
