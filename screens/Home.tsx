@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  FlatList,
 } from 'react-native';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 
@@ -22,11 +23,11 @@ const Home = ({navigation}) => {
     {id: 1, name: 'Rice', icon: icons.rice_bowl},
     {id: 2, name: 'Noodles', icon: icons.noodle},
     {id: 3, name: 'Hot Dogs', icon: icons.hotdog},
-    {id: 3, name: 'Salads', icon: icons.salad},
-    {id: 4, name: 'Burgers', icon: icons.hamburger},
-    {id: 5, name: 'Pizza', icon: icons.pizza},
-    {id: 6, name: 'Snacks', icon: icons.fries},
-    {id: 7, name: 'Suchi', icon: icons.sushi},
+    {id: 4, name: 'Salads', icon: icons.salad},
+    {id: 5, name: 'Burgers', icon: icons.hamburger},
+    {id: 6, name: 'Pizza', icon: icons.pizza},
+    {id: 7, name: 'Snacks', icon: icons.fries},
+    {id: 8, name: 'Suchi', icon: icons.sushi},
     {id: 9, name: 'Desserts', icon: icons.donut},
     {id: 10, name: 'Drings', icon: icons.drink},
   ];
@@ -279,9 +280,19 @@ const Home = ({navigation}) => {
       ],
     },
   ];
-  const [currentLocation, setCurrentLocation] = React.useState(
+  const [currentLocation, setCurrentLocation] = useState(
     initialCurrentLocation,
   );
+  const [categories, setCategories] = useState(categoryData);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [restaurants, setRestaurants] = useState(restaurantData);
+  const onSelectedCategory = category => {
+    const restaurantList = restaurantData.filter(r =>
+      r.categories.includes(category.id),
+    );
+    setRestaurants(restaurantList);
+    setSelectedCategory(category);
+  };
   const Header = () => {
     return (
       <View style={{flexDirection: 'row', height: 50}}>
@@ -325,10 +336,66 @@ const Home = ({navigation}) => {
       </View>
     );
   };
-
+  const MainCategories = () => {
+    const renderItem = ({item}) => {
+      const isItemSelected = selectedCategory?.id === item.id;
+      return (
+        <TouchableOpacity
+          style={{
+            padding: SIZES.padding,
+            paddingBottom: SIZES.padding * 2,
+            backgroundColor: isItemSelected ? COLORS.primary : COLORS.white,
+            borderRadius: SIZES.radius,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: SIZES.padding,
+            ...styles.shadow,
+          }}
+          onPress={() => onSelectedCategory(item)}>
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 25,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: isItemSelected ? COLORS.white : COLORS.lightGray,
+            }}>
+            <Image
+              source={item.icon}
+              resizeMode="contain"
+              style={{width: 30, height: 30}}
+            />
+            <Text
+              style={{
+                marginTop: SIZES.padding,
+                color: isItemSelected ? COLORS.white : COLORS.black,
+              }}>
+              {item.name}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      );
+    };
+    return (
+      <View style={{padding: SIZES.padding * 2}}>
+        <Text>Main</Text>
+        <Text>Categories</Text>
+        <FlatList
+          data={categories}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={item => `${item.id}`}
+          renderItem={renderItem}
+          contentContainerStyle={{paddingVertical: SIZES.padding * 2}}
+        />
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Header />
+      <MainCategories />
     </SafeAreaView>
   );
 };
@@ -337,6 +404,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.lightGray4,
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacitiy: 0.1,
+    shadowRadius: 3,
+    elevation: 1,
   },
 });
 
